@@ -1,0 +1,26 @@
+[project]
+name = "agribio_lab"
+version = "0.1.0"
+description = "agribio_lab using crewAI"
+authors = [{ name = "Your Name", email = "you@example.com" }]
+requires-python = ">=3.10,<3.14"
+dependencies = [
+    "crewai[tools]==1.14.4",
+    "fastapi>=0.141.1",
+    "uvicorn>=0.53.0",
+]
+
+[project.scripts]
+agribio_lab = "agribio_lab.main:run"
+run_crew = "agribio_lab.main:run"
+train = "agribio_lab.main:train"
+replay = "agribio_lab.main:replay"
+test = "agribio_lab.main:test"
+run_with_trigger = "agribio_lab.main:run_with_trigger"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.crewai]
+type = "crew"

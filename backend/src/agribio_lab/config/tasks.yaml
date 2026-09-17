@@ -1,0 +1,440 @@
+student_profile_task:
+  description: >
+    Analyze the student's interests, skills, resources, time,
+    budget, and learning goals to create a research profile
+    that will help the research team understand what the student
+    is capable of undertaking.
+
+    Student information:
+    - Interests: {interests}
+    - Skills: {skills}
+    - Available resources: {resources}
+    - Duration: {duration}
+    - Budget: {budget}
+
+    Project requirements:
+    - Required: {required_domains}
+    - Preferred: {preferred_features}
+
+    Evaluate:
+    - the student's current scientific and technical strengths
+    - what new scientific or technical skills could reasonably be
+      learned during the project
+    - what types of experiments and data collection are realistic
+      with the available resources
+    - what limitations are created by time, budget, equipment,
+      experience, or access to facilities
+    - how much technical and scientific challenge would be appropriate
+    - where the student could reasonably stretch beyond their current
+      skills
+
+    Do not propose specific research projects, research questions,
+    project themes, or preferred scientific approaches.
+
+    Do not assume that the project should primarily use computer vision,
+    sensors, or any particular technology simply because those resources
+    or skills are available.
+
+    Your role is to describe the student's capabilities and constraints.
+    The AgriBio Specialist and Innovation Specialist will independently
+    determine what research directions could fit this profile.
+
+  expected_output: >
+    A concise student research profile containing:
+
+    - Scientific strengths
+    - Technical strengths
+    - Experimental capabilities
+    - Available resources and facilities
+    - Skills that could reasonably be learned during the project
+    - Appropriate level of scientific challenge
+    - Appropriate level of technical challenge
+    - Important time, budget, equipment, and experience constraints
+    - Areas where the student could reasonably stretch beyond their
+      current experience
+
+    Do not recommend specific project ideas or research directions.
+
+  agent: student
+
+specialist_idea_task:
+  description: >
+    Develop promising research directions for the student based on the
+    student research profile.
+
+    Project requirements:
+    - Required: {required_domains}
+    - Preferred: {preferred_features}
+
+    When developing ideas, also consider these qualities when they
+    naturally strengthen the research:
+    {exploration_preferences}
+
+    Do not force preferred features or exploration preferences into a
+    project when they do not serve the scientific question.
+
+    Use your expertise in agricultural biotechnology, biology, and AI/ML
+    to identify scientific problems that could lead to meaningful,
+    testable research projects.
+
+    For each direction:
+    - identify the biological or agricultural problem
+    - propose a focused research question
+    - explain why the problem is scientifically interesting
+    - describe how AI/ML would contribute to the investigation
+    - identify what could be measured or observed
+    - suggest a possible hardware component when it adds scientific value
+    - explain why the direction is appropriate for this student's profile
+
+    Do not claim that a direction is novel or that it has not been studied.
+    The Researcher will investigate the evidence and uncertainties,
+    and the Refinement task will develop promising directions further
+    before the Mentor evaluates feasibility.
+
+  expected_output: >
+    A list of 5 candidate research directions.
+
+    For each direction, include:
+    - Project direction/title
+    - Biological or agricultural problem
+    - Research question
+    - Why the question is scientifically interesting
+    - Role of AI/ML
+    - Possible measurements or data to collect
+    - Possible hardware component, if useful
+    - Why it fits the student's profile
+
+    The directions should be specific enough for a Researcher to investigate
+    existing work, methods, datasets, limitations, and related experiments.
+
+  agent: agribio_specialist
+  context:
+    - student_profile_task
+
+innovation_idea_task:
+  description: >
+    Generate 4 unconventional and forward-looking candidate research
+    directions for this student based on the student research profile.
+
+    The projects must combine agriculture or biology with AI/ML.
+
+    Focus on research directions that go beyond common high school
+    projects such as plant disease classification, basic stress
+    detection, automated watering, simple growth monitoring,
+    sensor dashboards, or straightforward image classification.
+
+    Explore research opportunities involving:
+    - rare or underexplored scientific problems
+    - currently difficult or incompletely solved problems
+    - problems likely to become increasingly important in the next
+      5-10 years
+    - emerging scientific and technological capabilities
+    - unusual combinations of scientific fields
+    - technologies normally inaccessible to students that might be
+      approximated using low-cost hardware or computation
+    - original experimental data rather than only existing datasets
+
+    Also consider whether interesting research questions could emerge
+    from changes or disruptions in the external environment.
+
+    Examples of external conditions to consider include:
+    - short-term weather forecasts
+    - heat waves or cold events
+    - unusual temperature or humidity
+    - drought or water restrictions
+    - power outages
+    - greenhouse ventilation or cooling failure
+    - irrigation failure
+    - limited energy availability
+    - extreme weather events
+    - equipment or sensor failures
+
+    These are examples for exploration, not required project topics.
+    Do not force an external disruption into every idea.
+
+    Look especially for projects in which AI does more than classify
+    an observation after data have been collected.
+
+    Consider whether AI could instead:
+    - anticipate a future biological or agricultural problem
+    - use external information to forecast future conditions
+    - simulate possible outcomes
+    - compare alternative interventions
+    - decide what measurement or experiment should happen next
+    - adapt to changing conditions
+    - optimize the use of limited resources such as water or energy
+    - recommend or control an action before biological damage occurs
+
+    Prefer research questions where the student can experimentally
+    test whether the AI-assisted approach actually performs better
+    than a simpler baseline or conventional strategy.
+
+    The project should still investigate a biological or agricultural
+    question rather than becoming only a software application,
+    automation system, or engineering demonstration.
+
+    Ideas may be ambitious or uncertain at this stage. Do not eliminate
+    an interesting direction solely because its feasibility is unclear.
+    The Researcher and Mentor will investigate and refine it later.
+
+    Do not claim that an idea is novel simply because similar work is
+    difficult to find. Instead, explain why the direction appears
+    unusual, emerging, or worth further investigation.
+
+  expected_output: >
+    A list of 4 unconventional candidate research directions.
+
+    For each direction, include:
+
+    - Project direction/title
+    - Biological or agricultural problem
+    - Research question
+    - Real-world scenario or future problem motivating the research
+    - Why the problem may become increasingly important
+    - What makes the approach unusual or worth investigating
+    - Emerging technology or interdisciplinary connection involved
+    - Role of AI/ML
+    - What decision, prediction, adaptation, or intervention AI enables
+    - What the student could experimentally manipulate or simulate
+    - What the student could measure
+    - What original data could be collected
+    - What simple or conventional baseline the approach could be
+      compared against
+    - What could happen if the AI prediction or decision is wrong
+    - How the project differs from a standard
+      "collect data -> train classifier -> report accuracy" project
+    - Major uncertainties or questions the Researcher should investigate
+
+  agent: innovation_specialist
+  context:
+    - student_profile_task
+
+research_task:
+  description: >
+    Investigate the candidate research directions proposed by the 
+    AgriBio Specialist and Innovation Specialist.
+
+    For each candidate direction, find reliable evidence that will help
+    the research team understand what is already known and what practical
+    approaches may be possible.
+
+    Investigate:
+    - existing research related to the proposed research question
+    - similar experiments or projects that have already been attempted
+    - biological or agricultural methods commonly used
+    - AI/ML approaches that have been applied
+    - datasets or data-collection methods used
+    - equipment, sensors, or other technology commonly required
+    - important findings from previous research
+    - limitations or challenges reported in existing work
+    - unanswered questions or possible areas for further investigation
+    - practical considerations relevant to conducting the project
+    - whether similar projects or research questions appear commonly in
+      high school science competitions or student research
+    - evidence supporting or challenging claims that a direction is
+      emerging or underexplored
+    - recent developments that may make previously difficult approaches
+      more practical
+
+    Use credible sources when possible, including academic papers,
+    universities, government research organizations, and scientific
+    institutions.
+
+    Distinguish between:
+    - findings supported by sources
+    - conclusions made by researchers
+    - your own interpretation of the evidence
+
+    Do not assume that a research direction is novel simply because
+    you cannot find previous work on it.
+
+    Do not redesign, rank, or reject the candidate projects. Your role is to
+    gather and synthesize evidence that the Refinement task can use to develop
+    stronger research concepts.
+
+    A lack of direct published evidence should not be interpreted as evidence
+    that a candidate is weak. Clearly distinguish between:
+    - evidence that contradicts or undermines an idea
+    - evidence that reveals practical limitations
+    - limited or missing evidence because the direction is emerging or unusual
+  expected_output: >
+    A research brief for each candidate research direction.
+
+    For each direction, include:
+    - Candidate direction
+    - Relevant existing research
+    - Similar experiments or approaches
+    - Biological/agricultural methods used
+    - AI/ML methods used
+    - Available datasets or possible data-collection approaches
+    - Equipment or technology commonly used
+    - Important findings
+    - Known limitations or challenges
+    - Unanswered questions or possible research opportunities
+    - Practical considerations
+    - Sources
+    - Evidence about how established, emerging, or underexplored the
+      direction appears to be
+    - Examples of similar student projects, if found
+
+    Clearly indicate when evidence is limited or uncertain.
+  agent: researcher
+  context:
+    - student_profile_task
+    - specialist_idea_task
+    - innovation_idea_task
+
+refinement_task:
+  description: >
+    Research evidence should be used to understand scientific
+    plausibility, existing methods, limitations, and feasibility.
+
+    Do not favor a candidate simply because it has more published
+    research or stronger supporting evidence.
+
+    Emerging or unconventional ideas may naturally have less direct
+    evidence. Limited evidence should be treated as an uncertainty to
+    investigate rather than an automatic reason to discard the idea.
+
+    When synthesizing concepts, preserve promising unconventional
+    elements from the Innovation Specialist whenever they are
+    scientifically plausible.
+
+    Use established research as building blocks that can make an
+    unconventional idea experimentally testable, rather than allowing
+    established research to replace the unconventional idea.
+
+    Do not simply select the best existing ideas.
+
+    Look for opportunities to create stronger research concepts by:
+    - combining complementary elements from different candidate directions
+    - replacing conventional AI tasks with more meaningful prediction,
+      optimization, decision-making, simulation, or adaptive experimentation
+    - incorporating external conditions that affect the biological system,
+      such as weather forecasts, heat waves, drought conditions, changing
+      light conditions, equipment failures, or power outages
+    - considering situations where water, energy, time, equipment, or other
+      resources are limited
+    - turning monitoring systems into systems that predict future outcomes
+      or evaluate possible interventions
+    - identifying opportunities for the student to collect original
+      experimental data and test whether the AI's predictions or decisions
+      actually work
+
+    External conditions should not be added merely to make a project sound
+    more sophisticated. They should create a meaningful scientific or
+    engineering question.
+
+    For example, rather than only asking whether AI can detect heat stress,
+    consider questions such as whether future environmental conditions can
+    be used to predict plant response and determine which intervention
+    should be taken before damage occurs.
+
+    For each refined concept, clearly identify which candidate ideas
+    contributed to it and how research evidence was used to test,
+    constrain, or strengthen the concept.
+
+    Keep the student's constraints in mind, but do not simplify an idea
+    prematurely. The Mentor will perform the final feasibility evaluation.
+
+  expected_output: >
+    Develop 3 refined research concepts.
+
+    The 3 refined concepts should represent meaningfully different
+    research directions.
+
+    Do not produce three variations of the same biological problem,
+    sensing approach, intervention, or AI methodology.
+
+    Across the final concepts, preserve diversity in areas such as:
+    - biological question
+    - type of data or sensing modality
+    - AI/ML methodology
+    - experimental intervention
+    - real-world scenario
+
+    At least one refined concept should preserve a genuinely
+    unconventional element introduced by the Innovation Specialist,
+    even when that element has less direct published evidence, as long
+    as it remains scientifically plausible and experimentally testable.
+
+    For each concept, include:
+    - Project title
+    - Core biological or agricultural problem
+    - Real-world scenario
+    - Focused research question
+    - Hypothesis or expected relationship
+    - What the student would experimentally manipulate
+    - What original data would be collected
+    - External environmental or operational conditions involved, if relevant
+    - Role of AI/ML
+    - Decisions, predictions, simulations, or interventions made by the AI
+    - Hardware or sensing component, if scientifically useful
+    - Conventional baseline for comparison
+    - How the AI/system would be experimentally validated
+    - Candidate ideas that contributed to this concept
+    - Relevant evidence from the Researcher, including supporting evidence,
+      limitations, uncertainties, and evidence gaps
+    - Why this concept is stronger or more distinctive than the original ideas
+    - Major unresolved questions for the Mentor
+
+  agent: agribio_specialist
+
+  context:
+    - student_profile_task
+    - specialist_idea_task
+    - innovation_idea_task
+    - research_task
+
+mentor_task:
+  description: >
+    Review the refined research concepts produced after evidence-based
+    synthesis.
+
+    Evaluate whether each concept can become a rigorous and executable
+    high school research project.
+
+    For each concept, determine:
+    - whether the research question is scientifically meaningful
+    - whether AI/ML plays an essential rather than decorative role
+    - whether the proposed experiment can actually test the question
+    - whether the student can collect sufficient original data
+    - whether external conditions or scenarios are scientifically justified
+    - whether predictions, decisions, or interventions can be validated
+    - whether the project is feasible within the student's time, budget,
+      skills, and resources
+    - what parts should be simplified without removing the central
+      intellectual challenge
+    - what major scientific, technical, or experimental risks remain
+
+    Preserve the distinctive core of promising concepts rather than
+    automatically converting ambitious ideas into conventional monitoring
+    or classification projects.
+  expected_output: >
+    A detailed mentor review of the 3 refined research concepts.
+
+    For each concept, include:
+    - Refined project title
+    - Core research question
+    - What makes the project scientifically interesting
+    - Strengths
+    - Weaknesses
+    - Scientific depth
+    - AI/ML depth
+    - Experimental depth
+    - Feasibility
+    - Original data potential
+    - Major risks
+    - Recommended scope changes
+    - Minimum viable version
+    - Stretch version
+    - Skills the student would learn
+    - What evidence or preliminary experiment is needed before committing
+
+    Conclude by identifying which concepts warrant further investigation
+    and what questions should be resolved next.
+  agent: mentor
+  context:
+    - student_profile_task
+    - research_task
+    - refinement_task
